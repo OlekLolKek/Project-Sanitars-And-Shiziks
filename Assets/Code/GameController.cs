@@ -21,7 +21,7 @@ namespace Code
         public Color TextColor;
     }
     
-    public sealed class GameViewModel : MonoBehaviour
+    public sealed class GameController : MonoBehaviour
     {
         [SerializeField] private GameObject _startInfo;
         [SerializeField] private Player _playerX;
@@ -36,21 +36,21 @@ namespace Code
         private string _playerSide;
         private int _moveCount;
 
-        private void Awake()
-        {
-            SetGameControllerReferenceOnButtons();
-            _gameOverPanel.SetActive(false);
-            _moveCount = 0;
-            _restartButton.gameObject.SetActive(false);
-        }
+        // private void Awake()
+        // {
+        //     SetGameControllerReferenceOnButtons();
+        //     _gameOverPanel.SetActive(false);
+        //     _moveCount = 0;
+        //     _restartButton.gameObject.SetActive(false);
+        // }
 
-        void SetGameControllerReferenceOnButtons()
-        {
-            for (int i = 0; i < _buttonList.Length; i++)
-            {
-                _buttonList[i].GetComponentInParent<GridSpace>().SetGameControllerReference(this);
-            }
-        }
+        // void SetGameControllerReferenceOnButtons()
+        // {
+        //     for (int i = 0; i < _buttonList.Length; i++)
+        //     {
+        //         _buttonList[i].GetComponentInParent<GridSpace>().InjectGameViewModel(this);
+        //     }
+        // }
 
         public string GetPlayerSide()
         {
@@ -76,49 +76,57 @@ namespace Code
         {
             _moveCount++;
             
-            if (_buttonList[0].text == _playerSide && _buttonList[1].text == _playerSide &&
+            if (_buttonList[0].text == _playerSide &&
+                _buttonList[1].text == _playerSide &&
                 _buttonList[2].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
             
-            else if (_buttonList[3].text == _playerSide && _buttonList[4].text == _playerSide &&
+            else if (_buttonList[3].text == _playerSide &&
+                     _buttonList[4].text == _playerSide &&
                 _buttonList[5].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[6].text == _playerSide && _buttonList[7].text == _playerSide &&
+            else if (_buttonList[6].text == _playerSide &&
+                     _buttonList[7].text == _playerSide &&
                      _buttonList[8].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[0].text == _playerSide && _buttonList[3].text == _playerSide &&
+            else if (_buttonList[0].text == _playerSide &&
+                     _buttonList[3].text == _playerSide &&
                      _buttonList[6].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[1].text == _playerSide && _buttonList[4].text == _playerSide &&
+            else if (_buttonList[1].text == _playerSide &&
+                     _buttonList[4].text == _playerSide &&
                      _buttonList[7].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[2].text == _playerSide && _buttonList[5].text == _playerSide &&
+            else if (_buttonList[2].text == _playerSide &&
+                     _buttonList[5].text == _playerSide &&
                      _buttonList[8].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[0].text == _playerSide && _buttonList[4].text == _playerSide &&
+            else if (_buttonList[0].text == _playerSide &&
+                     _buttonList[4].text == _playerSide &&
                      _buttonList[8].text == _playerSide)
             {
                 GameOver(_playerSide);
             }
 
-            else if (_buttonList[2].text == _playerSide && _buttonList[4].text == _playerSide &&
+            else if (_buttonList[2].text == _playerSide &&
+                     _buttonList[4].text == _playerSide &&
                      _buttonList[6].text == _playerSide)
             {
                 GameOver(_playerSide);
@@ -198,6 +206,7 @@ namespace Code
             {
                 SetPlayerColors(_playerO, _playerX);
             }
+
             StartGame();
         }
 
