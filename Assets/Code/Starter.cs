@@ -21,11 +21,13 @@ namespace Code
 
         private void Start()
         {
-            _gameViewModel = new GameViewModel(_gridSpaces, _gameOverPanel,
-                _restartButton, _startInfo, 
-                _inactivePlayerColors, _activePlayerColors,
-                _stringsModel, _playerOne,
-                _playerTwo);
+            var monoBehavioursModel = new MonoBehavioursModel(_gridSpaces, _gameOverPanel,
+                _restartButton, _startInfo,
+                _playerOne, _playerTwo);
+            
+            _gameViewModel = new GameViewModel(_inactivePlayerColors,
+                _activePlayerColors, _stringsModel,
+                monoBehavioursModel);
 
             _gameViewModel.Initialize();
         }

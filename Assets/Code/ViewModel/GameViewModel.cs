@@ -2,177 +2,91 @@ using Code.Enum;
 using Code.Interface;
 using Code.Model;
 using Code.View;
+using UnityEngine;
 
 
 namespace Code.ViewModel
 {
     public class GameViewModel : IGameViewModel
     {
-        private readonly GridSpaceView[] _gridSpaces;
-
         private readonly PlayerColorModel _inactivePlayerColors;
         private readonly PlayerColorModel _activePlayerColors;
         private readonly StringsModel _strings;
+        private readonly TurnModel _turnModel;
+        
         private readonly GameOverPanelView _gameOverPanel;
         private readonly RestartButtonView _restartButton;
         private readonly StartInfoView _startInfo;
         private readonly PlayerTurnPanelView _playerOne;
         private readonly PlayerTurnPanelView _playerTwo;
         
+        private readonly GridSpaceViewModel _gridSpaceViewModel;
 
-        private TurnStates _playerSide;
-        private int _turnCount;
-
-        public GameViewModel(GridSpaceView[] gridSpaces, GameOverPanelView gameOverPanel,
-            RestartButtonView restartButton, StartInfoView startInfo,
-            PlayerColorModel inactivePlayerColors, PlayerColorModel activePlayerColors,
-            StringsModel strings, PlayerTurnPanelView playerOne,
-            PlayerTurnPanelView playerTwo)
+        public GameViewModel(PlayerColorModel inactivePlayerColors, 
+            PlayerColorModel activePlayerColors, StringsModel strings,
+            MonoBehavioursModel _monoBehavioursModel)
         {
-            _gridSpaces = gridSpaces;
-            _gameOverPanel = gameOverPanel;
-            _restartButton = restartButton;
-            _startInfo = startInfo;
+            _turnModel = new TurnModel();
+            _gridSpaceViewModel = new GridSpaceViewModel(this, _turnModel,
+                _monoBehavioursModel);
+            
+            _gameOverPanel = _monoBehavioursModel.GameOverPanel;
+            _restartButton = _monoBehavioursModel.RestartButton;
+            _startInfo = _monoBehavioursModel.StartInfo;
+            _playerOne = _monoBehavioursModel.PlayerOne;
+            _playerTwo = _monoBehavioursModel.PlayerTwo;
+            
             _inactivePlayerColors = inactivePlayerColors;
             _activePlayerColors = activePlayerColors;
             _strings = strings;
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
-            
-            _playerOne.Initialize(this);
-            _playerTwo.Initialize(this);
-            _restartButton.Initialize(this);
         }
 
         public void Initialize()
         {
-            foreach (var gridSpace in _gridSpaces)
-            {
-                gridSpace.Initialize(this);
-            }
+            _gridSpaceViewModel.Initialize();
+            
+            _playerOne.Initialize(this);
+            _playerTwo.Initialize(this);
+            _restartButton.Initialize(this);
 
             _gameOverPanel.gameObject.SetActive(false);
             _restartButton.gameObject.SetActive(false);
-        }
-
-        public void SetSpace(GridSpaceView gridSpace)
-        {
-            if (_playerSide == TurnStates.Player1)
-            {
-                gridSpace.SetPlayerOneImageActive();
-            }
-            else
-            {
-                gridSpace.SetPlayerTwoImageActive();
-            }
-            
-            gridSpace.Button.interactable = false;
-            EndTurn();
+            _startInfo.Text.text = $"{_strings.PlayerOneName} or {_strings.PlayerTwoName}?\nChoose the side!";
         }
 
         public void RestartGame()
         {
-            _turnCount = 0;
             _gameOverPanel.gameObject.SetActive(false);
             _restartButton.gameObject.SetActive(false);
             _startInfo.gameObject.SetActive(true);
             SetPlayerButtons(true);
             SetPlayerColorInactive();
 
-            foreach (var gridSpace in _gridSpaces)
-            {
-                gridSpace.SetPlayerImagesInactive();
-            }
+            _gridSpaceViewModel.SetPlayerImagesInactive();
+            
+            _playerOne.Panel.color = _activePlayerColors.PanelColor;
+            _playerOne.Image.color = _activePlayerColors.ImageColor;
+            _playerTwo.Panel.color = _activePlayerColors.PanelColor;
+            _playerTwo.Image.color = _activePlayerColors.ImageColor;
         }
 
-        public void EndTurn()
+        public void ChangeSides()
         {
-            _turnCount++;
-            
-            if (_gridSpaces[0].TurnState == _playerSide &&
-                _gridSpaces[1].TurnState == _playerSide &&
-                _gridSpaces[2].TurnState == _playerSide)
+            if (_turnModel.PlayerSide == TurnStates.Player1)
             {
-                GameOver(_playerSide);
-            }
-            
-            else if (_gridSpaces[3].TurnState == _playerSide &&
-                     _gridSpaces[4].TurnState == _playerSide &&
-                     _gridSpaces[5].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[6].TurnState == _playerSide &&
-                     _gridSpaces[7].TurnState == _playerSide &&
-                     _gridSpaces[8].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[0].TurnState == _playerSide &&
-                     _gridSpaces[3].TurnState == _playerSide &&
-                     _gridSpaces[6].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[1].TurnState == _playerSide &&
-                     _gridSpaces[4].TurnState == _playerSide &&
-                     _gridSpaces[7].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[2].TurnState == _playerSide &&
-                     _gridSpaces[5].TurnState == _playerSide &&
-                     _gridSpaces[8].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[0].TurnState == _playerSide &&
-                     _gridSpaces[4].TurnState == _playerSide &&
-                     _gridSpaces[8].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_gridSpaces[2].TurnState == _playerSide &&
-                     _gridSpaces[4].TurnState == _playerSide &&
-                     _gridSpaces[6].TurnState == _playerSide)
-            {
-                GameOver(_playerSide);
-            }
-
-            else if (_turnCount >= 9)
-            {
-                GameOver(TurnStates.None);
-            }
-
-            else
-            {
-                ChangeSides();
-            }
-        }
-
-        private void ChangeSides()
-        {
-            if (_playerSide == TurnStates.Player1)
-            {
-                _playerSide = TurnStates.Player2;
+                _turnModel.PlayerSide = TurnStates.Player2;
                 SetPlayerColors(_playerTwo, _playerOne);
             }
             else
             {
-                _playerSide = TurnStates.Player1;
+                _turnModel.PlayerSide = TurnStates.Player1;
                 SetPlayerColors(_playerOne, _playerTwo);
             }
         }
 
-        private void GameOver(TurnStates winningPlayer)
+        public void GameOver(TurnStates winningPlayer)
         {
-            SetBoardInteractable(false);
+            _gridSpaceViewModel.SetBoardInteractable(false);
 
             if (winningPlayer == TurnStates.None)
             {
@@ -197,27 +111,19 @@ namespace Code.ViewModel
             _gameOverPanel.Text.text = value;
         }
 
-        private void SetBoardInteractable(bool toggle)
-        {
-            foreach (var gridSpace in _gridSpaces)
-            {
-                gridSpace.Button.interactable = toggle;
-            }
-        }
-
         private void SetPlayerColors(PlayerTurnPanelView newPlayer, 
             PlayerTurnPanelView oldPlayer)
         {
             newPlayer.Panel.color = _activePlayerColors.PanelColor;
             newPlayer.Image.color = _activePlayerColors.ImageColor;
             oldPlayer.Panel.color = _inactivePlayerColors.PanelColor;
-            newPlayer.Image.color = _activePlayerColors.ImageColor;
+            oldPlayer.Image.color = _inactivePlayerColors.ImageColor;
         }
         
         public void SetStartingSide(TurnStates startingSide)
         {
-            _playerSide = startingSide;
-            if (_playerSide == TurnStates.Player1)
+            _turnModel.PlayerSide = startingSide;
+            if (_turnModel.PlayerSide == TurnStates.Player1)
             {
                 SetPlayerColors(_playerOne, _playerTwo);
             }
@@ -231,7 +137,7 @@ namespace Code.ViewModel
 
         private void StartGame()
         {
-            SetBoardInteractable(true);
+            _gridSpaceViewModel.SetBoardInteractable(true);
             SetPlayerButtons(false);
             _startInfo.gameObject.SetActive(false);
         }

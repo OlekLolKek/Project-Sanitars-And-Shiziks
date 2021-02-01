@@ -9,6 +9,5 @@ namespace Code.ViewModel
         void Initialize();
         void RestartGame();
         void SetStartingSide(TurnStates player);
-        void SetSpace(GridSpaceView gridSpace);
     }
 }

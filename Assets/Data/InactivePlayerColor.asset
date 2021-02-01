@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7318ceaeb3db4b9797b19e5ce8f35c15, type: 3}
   m_Name: InactivePlayerColor
   m_EditorClassIdentifier: 
-  _panelColor: {r: 0.58431375, g: 0.64705884, b: 0.6509804, a: 1}
-  _imageColor: {r: 0.58431375, g: 0.64705884, b: 0.6509804, a: 1}
+  _panelColor: {r: 0.20392157, g: 0.28627452, b: 0.36862746, a: 1}
+  _imageColor: {r: 0.20392157, g: 0.28627452, b: 0.36862746, a: 1}

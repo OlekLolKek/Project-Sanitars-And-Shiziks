@@ -12,16 +12,16 @@ namespace Code.View
         [SerializeField] private Image _playerOneImage;
         [SerializeField] private Image _playerTwoImage;
 
-        public TurnStates TurnState { get; set; }
+        public TurnStates TurnState { get; private set; }
         public Button Button => _button;
-        
-        private IGameViewModel _gameViewModel;
 
-        public void Initialize(IGameViewModel gameViewModel)
+        private GridSpaceViewModel _gridSpaceViewModel;
+
+        public void Initialize(GridSpaceViewModel gridSpaceViewModel)
         {
-            _gameViewModel = gameViewModel;
+            _gridSpaceViewModel = gridSpaceViewModel;
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => _gameViewModel.SetSpace(this));
+            _button.onClick.AddListener(() => _gridSpaceViewModel.SetSpace(this));
         }
 
         public void SetPlayerOneImageActive()
