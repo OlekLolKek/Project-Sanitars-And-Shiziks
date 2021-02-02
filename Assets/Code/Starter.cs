@@ -1,3 +1,4 @@
+using System;
 using Code.Model;
 using Code.View;
 using Code.ViewModel;
@@ -17,7 +18,11 @@ namespace Code
         [SerializeField] private RestartButtonView _restartButton;
         [SerializeField] private StartInfoView _startInfo;
         [SerializeField] private GridSpaceView[] _gridSpaces;
+        [SerializeField] private AudioSource _musicAudioSource;
+        [SerializeField] private RectTransform[] _lines;
+        
         private IGameViewModel _gameViewModel;
+        private MusicVisualizerViewModel _musicVisualizerViewModel;
 
         private void Start()
         {
@@ -29,7 +34,15 @@ namespace Code
                 _activePlayerColors, _stringsModel,
                 monoBehavioursModel);
 
+            _musicVisualizerViewModel = new MusicVisualizerViewModel(_musicAudioSource, _lines);
+
             _gameViewModel.Initialize();
+        }
+
+        private void Update()
+        {
+            var deltaTime = Time.deltaTime;
+            _musicVisualizerViewModel.Execute(deltaTime);
         }
     }
 }

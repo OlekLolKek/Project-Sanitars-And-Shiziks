@@ -24,25 +24,24 @@ namespace Code.View
             _button.onClick.AddListener(() => _gridSpaceViewModel.SetSpace(this));
         }
 
-        public void SetPlayerOneImageActive()
+        public void SetPlayerImagesActive(TurnStates states)
         {
-            _playerOneImage.gameObject.SetActive(true);
-            _playerTwoImage.gameObject.SetActive(false);
-            TurnState = TurnStates.Player1;
-        }
-
-        public void SetPlayerTwoImageActive()
-        {
-            _playerOneImage.gameObject.SetActive(false);
-            _playerTwoImage.gameObject.SetActive(true);
-            TurnState = TurnStates.Player2;
-        }
-
-        public void SetPlayerImagesInactive()
-        {
-            _playerOneImage.gameObject.SetActive(false);
-            _playerTwoImage.gameObject.SetActive(false);
-            TurnState = TurnStates.None;
+            TurnState = states;
+            if (states == TurnStates.None)
+            {
+                _playerOneImage.gameObject.SetActive(false);
+                _playerTwoImage.gameObject.SetActive(false);
+            }
+            else if (states == TurnStates.Player1)
+            {
+                _playerOneImage.gameObject.SetActive(true);
+                _playerTwoImage.gameObject.SetActive(false);
+            }
+            else
+            {
+                _playerOneImage.gameObject.SetActive(false);
+                _playerTwoImage.gameObject.SetActive(true);
+            }
         }
     }
 }

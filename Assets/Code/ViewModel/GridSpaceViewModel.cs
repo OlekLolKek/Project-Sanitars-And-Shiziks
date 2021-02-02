@@ -32,7 +32,7 @@ namespace Code.ViewModel
         {
             foreach (var gridSpace in _monoBehavioursModel.GridSpaces)
             {
-                gridSpace.SetPlayerImagesInactive();
+                gridSpace.SetPlayerImagesActive(TurnStates.None);
             }
         }
 
@@ -56,61 +56,52 @@ namespace Code.ViewModel
             {
                 _gameViewModel.GameOver(playerSide);
             }
-            
             else if (gridSpaces[3].TurnState == playerSide &&
                      gridSpaces[4].TurnState == playerSide &&
                      gridSpaces[5].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[6].TurnState == playerSide &&
                      gridSpaces[7].TurnState == playerSide &&
                      gridSpaces[8].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[0].TurnState == playerSide &&
                      gridSpaces[3].TurnState == playerSide &&
                      gridSpaces[6].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[1].TurnState == playerSide &&
                      gridSpaces[4].TurnState == playerSide &&
                      gridSpaces[7].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[2].TurnState == playerSide &&
                      gridSpaces[5].TurnState == playerSide &&
                      gridSpaces[8].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[0].TurnState == playerSide &&
                      gridSpaces[4].TurnState == playerSide &&
                      gridSpaces[8].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (gridSpaces[2].TurnState == playerSide &&
                      gridSpaces[4].TurnState == playerSide &&
                      gridSpaces[6].TurnState == playerSide)
             {
                 _gameViewModel.GameOver(playerSide);
             }
-
             else if (_turnModel.TurnCount >= 9)
             {
                 _gameViewModel.GameOver(TurnStates.None);
             }
-
             else
             {
                 _gameViewModel.ChangeSides();
@@ -121,11 +112,11 @@ namespace Code.ViewModel
         {
             if (_turnModel.PlayerSide == TurnStates.Player1)
             {
-                gridSpace.SetPlayerOneImageActive();
+                gridSpace.SetPlayerImagesActive(TurnStates.Player1);
             }
             else
             {
-                gridSpace.SetPlayerTwoImageActive();
+                gridSpace.SetPlayerImagesActive(TurnStates.Player2);
             }
 
             gridSpace.Button.interactable = false;

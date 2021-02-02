@@ -9,13 +9,11 @@ namespace Code.View
     public sealed class PlayerTurnPanelView : MonoBehaviour
     {
         [SerializeField] private Image _panel;
-        [SerializeField] private Image _image;
         [SerializeField] private Button _button;
         [SerializeField] private TurnStates _side;
         private IGameViewModel _gameViewModel;
         
         public Image Panel => _panel;
-        public Image Image => _image;
         public Button Button => _button;
 
         public void Initialize(IGameViewModel gameViewModel)

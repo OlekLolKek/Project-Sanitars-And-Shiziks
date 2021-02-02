@@ -24,17 +24,17 @@ namespace Code.ViewModel
 
         public GameViewModel(PlayerColorModel inactivePlayerColors, 
             PlayerColorModel activePlayerColors, StringsModel strings,
-            MonoBehavioursModel _monoBehavioursModel)
+            MonoBehavioursModel monoBehavioursModel)
         {
             _turnModel = new TurnModel();
             _gridSpaceViewModel = new GridSpaceViewModel(this, _turnModel,
-                _monoBehavioursModel);
+                monoBehavioursModel);
             
-            _gameOverPanel = _monoBehavioursModel.GameOverPanel;
-            _restartButton = _monoBehavioursModel.RestartButton;
-            _startInfo = _monoBehavioursModel.StartInfo;
-            _playerOne = _monoBehavioursModel.PlayerOne;
-            _playerTwo = _monoBehavioursModel.PlayerTwo;
+            _gameOverPanel = monoBehavioursModel.GameOverPanel;
+            _restartButton = monoBehavioursModel.RestartButton;
+            _startInfo = monoBehavioursModel.StartInfo;
+            _playerOne = monoBehavioursModel.PlayerOne;
+            _playerTwo = monoBehavioursModel.PlayerTwo;
             
             _inactivePlayerColors = inactivePlayerColors;
             _activePlayerColors = activePlayerColors;
@@ -51,11 +51,12 @@ namespace Code.ViewModel
 
             _gameOverPanel.gameObject.SetActive(false);
             _restartButton.gameObject.SetActive(false);
-            _startInfo.Text.text = $"{_strings.PlayerOneName} or {_strings.PlayerTwoName}?\nChoose the side!";
+            _startInfo.Text.text = $"{_strings.PlayerOneName} or {_strings.PlayerTwoName}?";
         }
 
         public void RestartGame()
         {
+            _turnModel.TurnCount = 0;
             _gameOverPanel.gameObject.SetActive(false);
             _restartButton.gameObject.SetActive(false);
             _startInfo.gameObject.SetActive(true);
@@ -65,9 +66,7 @@ namespace Code.ViewModel
             _gridSpaceViewModel.SetPlayerImagesInactive();
             
             _playerOne.Panel.color = _activePlayerColors.PanelColor;
-            _playerOne.Image.color = _activePlayerColors.ImageColor;
             _playerTwo.Panel.color = _activePlayerColors.PanelColor;
-            _playerTwo.Image.color = _activePlayerColors.ImageColor;
         }
 
         public void ChangeSides()
@@ -115,9 +114,7 @@ namespace Code.ViewModel
             PlayerTurnPanelView oldPlayer)
         {
             newPlayer.Panel.color = _activePlayerColors.PanelColor;
-            newPlayer.Image.color = _activePlayerColors.ImageColor;
             oldPlayer.Panel.color = _inactivePlayerColors.PanelColor;
-            oldPlayer.Image.color = _inactivePlayerColors.ImageColor;
         }
         
         public void SetStartingSide(TurnStates startingSide)
@@ -151,9 +148,7 @@ namespace Code.ViewModel
         private void SetPlayerColorInactive()
         {
             _playerOne.Panel.color = _inactivePlayerColors.PanelColor;
-            _playerOne.Image.color = _inactivePlayerColors.ImageColor;
             _playerTwo.Panel.color = _inactivePlayerColors.PanelColor;
-            _playerTwo.Image.color = _inactivePlayerColors.ImageColor;
         }
     }
 }
