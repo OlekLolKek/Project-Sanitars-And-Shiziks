@@ -38,9 +38,11 @@ namespace Code
 
             _musicVisualizerViewModel = new MusicVisualizerViewModel(_musicAudioSource, _lines);
 
-            _networkViewModel = new NetworkViewModel();
+            _networkViewModel = new NetworkViewModel(_gridSpaces);
 
             _gameViewModel.Initialize();
+            
+            //CmdDebugLog();
         }
 
         private void Update()
@@ -51,16 +53,26 @@ namespace Code
 
         public override void OnClientConnect(NetworkConnection conn)
         {
-            base.OnClientConnect(conn);
-
-            _networkViewModel.OnClientConnect(conn);
+            //base.OnClientConnect(conn);
+            //CmdDebugLog();
+            //_networkViewModel.OnClientConnect(conn);
         }
 
         public override void OnServerAddPlayer(NetworkConnection conn)
         {
-            base.OnServerAddPlayer(conn);
-
-            _networkViewModel.OnServerAddPlayer(conn);
+            
         }
+
+        // [Command]
+        // private void CmdDebugLog()
+        // {
+        //     RpcDebugLog();
+        // }
+        //
+        // [ClientRpc]
+        // private void RpcDebugLog()
+        // {
+        //     Debug.Log("test");
+        // }
     }
 }

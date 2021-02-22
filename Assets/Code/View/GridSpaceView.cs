@@ -1,19 +1,23 @@
 using Code.Enum;
 using Code.ViewModel;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 namespace Code.View
 {
-    public sealed class GridSpaceView : MonoBehaviour
+    public sealed class GridSpaceView : NetworkBehaviour
     {
         [SerializeField] private Button _button;
         [SerializeField] private Image _playerOneImage;
         [SerializeField] private Image _playerTwoImage;
+        [SerializeField] private NetworkIdentity _thisIdentity;
 
+        
         public TurnStates TurnState { get; private set; }
         public Button Button => _button;
+        public NetworkIdentity NetworkIdentity => _thisIdentity;
 
         private GridSpaceViewModel _gridSpaceViewModel;
 
