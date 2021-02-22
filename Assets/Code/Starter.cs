@@ -2,12 +2,13 @@ using System;
 using Code.Model;
 using Code.View;
 using Code.ViewModel;
+using Mirror;
 using UnityEngine;
 
 
 namespace Code
 {
-    public class Starter : MonoBehaviour
+    public class Starter : NetworkManager
     {
         [SerializeField] private PlayerColorModel _inactivePlayerColors;
         [SerializeField] private PlayerColorModel _activePlayerColors;
@@ -23,8 +24,9 @@ namespace Code
         
         private IGameViewModel _gameViewModel;
         private MusicVisualizerViewModel _musicVisualizerViewModel;
+        private NetworkViewModel _networkViewModel;
 
-        private void Start()
+        public override void Start()
         {
             var monoBehavioursModel = new MonoBehavioursModel(_gridSpaces, _gameOverPanel,
                 _restartButton, _startInfo,
@@ -36,7 +38,11 @@ namespace Code
 
             _musicVisualizerViewModel = new MusicVisualizerViewModel(_musicAudioSource, _lines);
 
+            _networkViewModel = new NetworkViewModel(_gridSpaces);
+
             _gameViewModel.Initialize();
+            
+            //CmdDebugLog();
         }
 
         private void Update()
@@ -44,5 +50,29 @@ namespace Code
             var deltaTime = Time.deltaTime;
             _musicVisualizerViewModel.Execute(deltaTime);
         }
+
+        public override void OnClientConnect(NetworkConnection conn)
+        {
+            //base.OnClientConnect(conn);
+            //CmdDebugLog();
+            //_networkViewModel.OnClientConnect(conn);
+        }
+
+        public override void OnServerAddPlayer(NetworkConnection conn)
+        {
+            
+        }
+
+        // [Command]
+        // private void CmdDebugLog()
+        // {
+        //     RpcDebugLog();
+        // }
+        //
+        // [ClientRpc]
+        // private void RpcDebugLog()
+        // {
+        //     Debug.Log("test");
+        // }
     }
 }

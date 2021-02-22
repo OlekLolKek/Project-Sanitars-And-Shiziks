@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3358af6b74f47fcbf802bd3a3cf994a, type: 3}
   m_Name: Strings
   m_EditorClassIdentifier: 
-  _playerOneName: Santars
+  _playerOneName: Sanitars
   _playerTwoName: Shiziks
   _winningText: ' win!'
   _drawText: It's a Durka!
